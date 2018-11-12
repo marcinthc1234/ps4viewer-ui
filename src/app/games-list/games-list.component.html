@@ -1,1 +1,14 @@
-<h2>Here are the games stored in the database: </h2>
+<h2>Games</h2>
+
+<table class="table">
+    <tr>
+        <th *ngFor="let column of columns">
+            {{column}}
+        </th>
+    </tr>
+    <tr *ngFor="let game of games">
+        <td *ngFor="let column of columns">
+            {{game[column]}}
+        </td>
+    </tr>
+</table>
