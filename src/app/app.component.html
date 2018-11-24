@@ -1,3 +1,10 @@
-<app-header></app-header>
-<app-game-list></app-game-list>
+<app-header (menuItemSelected)="onNavigate($event)"></app-header>
 
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <app-game-list *ngIf="loadedMenuItem === 'games'"></app-game-list>
+        <app-companies-list *ngIf="loadedMenuItem === 'companies'"></app-companies-list>
+    </div>
+  </div>
+</div>

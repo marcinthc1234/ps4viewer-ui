@@ -1,0 +1,13 @@
+.active-star {
+    color:yellow;
+    text-shadow: 2px 2px 2px #aaa;
+    font-size: 2em;
+    padding-right: 4px;
+}
+
+.inactive-star {
+    color:oldlace;
+    text-shadow: 2px 2px 2px #aaa;
+    font-size: 2em;
+    padding-right: 4px;
+}

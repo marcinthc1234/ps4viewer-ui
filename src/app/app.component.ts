@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  
+  loadedMenuItem: string = 'games';
+
+  onNavigate(menuItem: string) {
+    this.loadedMenuItem = menuItem;
+  }
 }

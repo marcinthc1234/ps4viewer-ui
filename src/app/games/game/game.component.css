@@ -1,0 +1,15 @@
+.vmiddle {
+    vertical-align: middle;
+}
+
+.h2middle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+img {
+    object-fit: cover;
+    object-position: 50% 0%;
+    width: 130px;
+    height: 80px;
+}

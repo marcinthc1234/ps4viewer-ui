@@ -6,15 +6,9 @@
             <h3>{{column}}</h3>
         </th>
     </tr>
-    <tr *ngFor="let game of games">
-        <td>
-            <img 
-            src="{{game.imagePath}}" 
-            alt="{{game.name}}"
-            class="img-responsive"
-            style="max-height: 100px;">
-        </td>
-        <td class="vmiddle"><h2 class="h2middle">{{game.name}}</h2></td>
-        <td class="vmiddle"><h2 class="h2middle"><small>{{game.company}}</small></h2></td>
+    <tr 
+        *ngFor="let gameElement of games"
+        [game]="gameElement"
+        app-game>
     </tr>
 </table>
