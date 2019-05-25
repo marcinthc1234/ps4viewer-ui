@@ -1,0 +1,16 @@
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+.form-inline .form-control {
+    width: 300px;
+}
+
+.field-line {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}

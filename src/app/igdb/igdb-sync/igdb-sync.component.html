@@ -1,0 +1,20 @@
+<h2>Synchronization with IGDB</h2>
+
+
+<div class="form-horizontal">
+  <div class="control-group form-inline">
+    
+    <div class="field-line">
+      <label for="igdb-key" class="control-label col-xs-2">IGDB API key</label>
+      <div class="controls col-xs-10">
+        <input type="text" id="igdb-key" #igdbKey class="form-control">
+      </div>
+    </div>
+    
+    <button (click)="onSynchronizeClick(igdbKey.value)" type="button" class="btn btn-primary">Synchronize</button>
+    
+    <br/>
+    <app-log-box #logbox></app-log-box>
+  
+  </div>
+</div>
