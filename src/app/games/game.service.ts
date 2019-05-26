@@ -1,9 +1,11 @@
 import { Game } from './game.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class GameService {
     apiUrl: string = 'http://localhost:8080';
 
@@ -29,5 +31,20 @@ export class GameService {
         // ];
     }
 
+    updateFromIgdb(game: object) {
+        // prepare headers and data
+        let httpHeaders = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Cache-Control', 'no-cache');
+        let options = {
+            headers: httpHeaders
+        };
+        let gameJson: string = JSON.stringify(game);
+
+        // send post request to update game in our API
+        this.httpClient.post(this.apiUrl + '/games', gameJson, options).subscribe(response => {
+            // do nothing
+        });
+    }
     
 }

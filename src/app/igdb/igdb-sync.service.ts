@@ -3,6 +3,7 @@ import { IgdbApiService } from './igdb-api.service';
 import { LogBoxComponent } from '../tools-ui/log-box/log-box.component';
 import { LogBox } from '../tools-ui/log-box/log-box';
 import { DateHelp } from '../tools-help/date-help';
+import { GameService } from '../games/game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class IgdbSyncService {
   gamesCount: number;
   gamesTotal: number;
 
-  constructor(private igdbApiService: IgdbApiService) { }
+  constructor(private igdbApiService: IgdbApiService, private gameService: GameService) { }
 
   startSync(igdbKey: string, logBoxComponent: LogBoxComponent = null) {
     // initialize input parameters
@@ -64,11 +65,15 @@ export class IgdbSyncService {
     this.logBox.appendLine("");
     this.logBox.appendLine("Request number " + (requestsMade + 1) + " starting from creation date: " + DateHelp.formatTime(startingFromDate));
 
+    // get games from IGDB
     let filters = this.getFilters(startingFromDate);
     this.igdbApiService.getGames(filters, 'created_at:asc').subscribe(games => {
       games.forEach(game => {
         this.logBox.appendLine("Game received: " + game['name']);
         startingFromDate = game['created_at'];
+
+        // update game in our API
+        this.gameService.updateFromIgdb(game);
       });
       requestsMade++;
       if (requestsMade < 2) {
