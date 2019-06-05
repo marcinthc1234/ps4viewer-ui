@@ -37,4 +37,12 @@ export class LogBoxComponent implements OnInit {
     this.textArea.nativeElement.scrollTop = this.textArea.nativeElement.scrollHeight;
   }
 
+  reset() {
+    this.text = "";
+  }
+
+  getWidth(): number {
+    return this.textArea.nativeElement.offsetWidth;
+  }
+
 }

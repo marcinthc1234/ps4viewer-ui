@@ -6,14 +6,25 @@
     
     <div class="field-line">
       <label for="igdb-key" class="control-label col-xs-2">IGDB API key</label>
-      <div class="controls col-xs-10">
+      <div class="controls col-xs-7">
         <input type="text" id="igdb-key" #igdbKey class="form-control">
       </div>
+      <button (click)="onSynchronizeClick(igdbKey.value)" type="button" class="btn btn-primary">Synchronize</button>
+      <button (click)="onStopClick()" type="button" class="btn btn-danger">Stop</button>
     </div>
     
-    <button (click)="onSynchronizeClick(igdbKey.value)" type="button" class="btn btn-primary">Synchronize</button>
+    <div class="field-line field-line-title">
+      <label class="control-label col-xs-4">Last Creation Date:</label>
+      <label class="control-label col-xs-4">Last Update Date:</label>
+      <label class="control-label col-xs-3">Synced Games:</label>
+    </div>
     
-    <br/>
+    <div class="field-line">
+      <label class="control-label col-xs-4"><h4>{{getLastCreationDate()}}</h4></label>
+      <label class="control-label col-xs-4"><h4>{{getLastUpdateDate()}}</h4></label>
+      <label class="control-label col-xs-3"><h4>{{getGamesSynced()}}</h4></label>
+    </div>
+    
     <app-log-box #logbox></app-log-box>
   
   </div>

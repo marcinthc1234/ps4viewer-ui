@@ -1,34 +1,51 @@
 import { Game } from './game.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, EMPTY } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators'; 
+import { TypeHelp } from '../tools-help/type-help';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GameService {
-    apiUrl: string = 'http://localhost:8080';
+    apiUrl: string = 'http://localhost:8080/games';
 
     constructor(private httpClient: HttpClient) {
 
     }
 
     getGames(): Observable<Game[]> {
+        let response: Observable<Game[]> = this.httpClient
+            .get<Game[]>(this.apiUrl)
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Getting all games failed', err.error);
+                return EMPTY;
+            }));
+        return response;
+    }
 
-        return this.httpClient.get<Game[]>(this.apiUrl + '/games');
+    createFromIgdb(game: object) {
+        // prepare headers and data
+        let httpHeaders = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Cache-Control', 'no-cache');
+        let options = {
+            headers: httpHeaders
+        };
+        game = this.validateAndFixFromIgdb(game);
+        let gameJson: string = JSON.stringify(game);
 
-        // return [
-        //     new Game('Dark Souls', 'From Software', 'https://upload.wikimedia.org/wikipedia/en/8/8d/Dark_Souls_Cover_Art.jpg'),
-        //     new Game('Borderlands 2', 'Gearsoft', 'https://upload.wikimedia.org/wikipedia/en/7/77/Borderlands2boxart3.jpg'),
-        //     new Game('Rise of the Tomb Raider', 'Square Enix', 'https://upload.wikimedia.org/wikipedia/en/2/29/Rise_of_the_Tomb_Raider.jpg'),
-        //     new Game('Doom', 'ID Software', 'https://upload.wikimedia.org/wikipedia/en/5/57/Doom_cover_art.jpg'),
-        //     new Game('Driveclub', 'Evolution Studios', 'https://techraptor.net/wp-content/uploads/2014/10/DriveClub-Logo.jpg'),
-        //     new Game('Rayman Legends', 'Ubisoft', 'https://upload.wikimedia.org/wikipedia/en/f/f6/Rayman_Legends_Box_Art.jpg'),
-        //     new Game('Horizon Zero Dawn', 'Guerrilla Games', 'https://upload.wikimedia.org/wikipedia/en/9/93/Horizon_Zero_Dawn.jpg'),
-        //     new Game('Fallout 4', 'Bethesda Game Studios', 'https://upload.wikimedia.org/wikipedia/en/7/70/Fallout_4_cover_art.jpg'),
-        //     new Game('Assassin\'s Creed Odyssey', 'Ubisoft', 'https://upload.wikimedia.org/wikipedia/en/9/99/ACOdysseyCoverArt.png'),
-        //     new Game('Bloodborne', 'From Software', 'https://upload.wikimedia.org/wikipedia/en/6/68/Bloodborne_Cover_Wallpaper.jpg'),
-        // ];
+        // send post request to create game in our API
+        this.httpClient
+            .post(this.apiUrl, gameJson, options)
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Creation of game failed. JSON sent: ' + gameJson, err.error);
+                return EMPTY;
+            }))
+            .subscribe(response => {
+                // do nothing
+            });
     }
 
     updateFromIgdb(game: object) {
@@ -39,12 +56,68 @@ export class GameService {
         let options = {
             headers: httpHeaders
         };
+        game = this.validateAndFixFromIgdb(game);
         let gameJson: string = JSON.stringify(game);
 
         // send post request to update game in our API
-        this.httpClient.post(this.apiUrl + '/games', gameJson, options).subscribe(response => {
-            // do nothing
-        });
+        this.httpClient
+            .put(this.apiUrl, gameJson, options)
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Update of game failed. JSON sent: ' + gameJson, err.error);
+                return EMPTY;
+            }))
+            .subscribe(response => {
+                // do nothing
+            });
+    }
+
+    getLastCreationDate(): Observable<number> {
+        let response: Observable<number> = this.httpClient
+            .get<number>(this.apiUrl + '/last-create')
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Getting last creation date failed', err.error);
+                return EMPTY;
+            }));
+        return response;
     }
     
+    getLastUpdateDate(): Observable<number> {
+        let response: Observable<number> = this.httpClient
+            .get<number>(this.apiUrl + '/last-update')
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Getting last update date failed', err.error);
+                return EMPTY;
+            }));
+        return response;
+    }
+
+    /**
+     * Validate if a game object comming from IGDB is valid.
+     * All mistakes are fixed and game object is returned.
+     * @param game 
+     */
+    private validateAndFixFromIgdb(game: object): object {
+        // Sometimes IGDB sends an involved_company as a number (id probably) instead of object
+        if ('involved_companies' in game) {
+            game['involved_companies'].forEach(function(involvedCompany, index, involvedCompanies) {
+                if (TypeHelp.isNumber(involvedCompany)) {
+                    involvedCompanies.splice(index, 1);
+                    console.log("Removed involved_company (not an object) from game: " + game['id']);
+                }
+            });
+        }
+
+        // Sometimes IGDB sends an image as a number (id probably) instead of object
+        if ('involved_companies' in game) {
+            game['involved_companies'].forEach(involvedCompany => {
+                if (('logo' in involvedCompany['company']) && TypeHelp.isNumber(involvedCompany['company']['logo'])) {
+                    delete involvedCompany['company']['logo'];
+                    console.log("Removed company.logo (not an object) from game: " + game['id']);
+                }
+            });
+        }
+        
+        return game;
+    }
+
 }

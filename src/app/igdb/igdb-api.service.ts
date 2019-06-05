@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 
@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 })
 export class IgdbApiService {
 
+  // use cors-anywhere proxy to avoid CORS security check.
   private apiUrl: string = 'https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com';
   private defaultStep: number = 50; // number of games per request (per page)
   private apiKey: string;
@@ -25,8 +26,9 @@ export class IgdbApiService {
   }
 
   getGamesCount(filters: string[] = null): Observable<number> {
-    let gamesCountUrl = this.getGamesCountUrl(filters);
-    return this.get(gamesCountUrl).pipe(map(result => result['count'])) ;
+    let gamesCountUrl = this.getGamesCountUrl();
+    let gamesCountBody = this.getGamesCountBody(filters);
+    return this.post(gamesCountUrl, gamesCountBody).pipe(map(result => result['count'])) ;
   }
   
   private getGamesUrl(filters: string[] = null, orderBy: string = null, page: number = 0, step: number = this.defaultStep, fields: string[] = this.getDefaultFields()) {
@@ -47,21 +49,26 @@ export class IgdbApiService {
     return url;
   }
 
-  private getGamesCountUrl(filters: string[] = null, orderBy: string = null, page: number = 0, step: number = this.defaultStep, fields: string[] = this.getDefaultFields()) {
+  private getGamesCountUrl(): string {
     let url: string = this.apiUrl;
     url += '/games/count'
-    url += '/?filter[platforms][in]=' + this.defaultPlatformCode;
+    return url;
+  }
+
+  private getGamesCountBody(filters: string[] = null): string {
+    let body: string = "where platforms = [" + this.defaultPlatformCode + "]";
     if (filters != null) {
       filters.forEach(filter => {
-        url += '&filter' + filter;
+        body += ' & ' + filter;
       });
     }
-    return url;
+    body += ";"
+    return body;
   }
 
   private getDefaultFields(): string[] {
     let defaultFields = 
-      ['id','name','created_at','updated_at','summary','storyline','popularity',
+      ['id','name','created_at','updated_at','release_dates.date','summary','storyline','popularity',
       'involved_companies.company.name','involved_companies.company.description',
       'involved_companies.company.logo.image_id','involved_companies.company.updated_at',
       'involved_companies.developer','genres.name','platforms.name','cover.image_id']
@@ -71,6 +78,11 @@ export class IgdbApiService {
   private get(url: string): Observable<object[]> {
     let headers = this.getDefaultHeaders();
     return this.httpClient.get<object[]>(url, { headers: headers });
+  }
+
+  private post(url: string, body: string): Observable<object[]> {
+    let headers = this.getDefaultHeaders();
+    return this.httpClient.post<object[]>(url, body, { headers: headers });
   }
 
   private getDefaultHeaders(): HttpHeaders {
