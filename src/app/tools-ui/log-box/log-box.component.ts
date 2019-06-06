@@ -20,16 +20,15 @@ export class LogBoxComponent implements OnInit {
     this.scrollToBottom();
   }
 
-  append(data: string) {
-    this.text += data;
-    this.scrollToBottom();
+  append(text: string) {
+    this.text += text;
   }
 
-  appendLine(data: string) {
+  appendLine(text: string) {
     if (this.text == '') {
-      this.append(data);
+      this.append(text);
     } else {
-      this.append("\n" + data);
+      this.append("\n" + text);
     }
   }
 

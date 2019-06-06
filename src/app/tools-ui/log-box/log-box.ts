@@ -1,4 +1,5 @@
 import { LogBoxComponent } from "./log-box.component";
+import { TextHelp } from "src/app/tools-help/text-help";
 
 export class LogBox {
 
@@ -10,15 +11,29 @@ export class LogBox {
     this.logBoxComponent = logBoxComponent;
   }
 
-  append(data: string) {
+  append(text: string) {
     if (this.logBoxComponent != null) {
-        this.logBoxComponent.append(data);
+        this.logBoxComponent.append(text);
     }
   }
 
-  appendLine(data: string) {
+  /**
+   * Appends a line in the textarea. If left and right texts are given, 
+   * then it concatenates the two texts by aligning them left and right of the textarea.
+   * @param textLeft 
+   * @param textRight 
+   */
+  appendLine(textLeft: string, textRight: string = null) {
     if (this.logBoxComponent != null) {
-        this.logBoxComponent.appendLine(data);
+      // concatenate left and right text
+      let text = textLeft;
+      if (textRight != null) {
+        let maxCharacters = this.getMaxCharactersPerLine();
+        text = TextHelp.fixLength(textLeft, maxCharacters - textRight.length - 1);
+        text += " " + textRight;
+      }
+        
+      this.logBoxComponent.appendLine(text);
     }
   }
   

@@ -107,11 +107,10 @@ export class IgdbSyncService {
     this.requestsMade++;
     let dateField = this.getDateField(forUpdate);
     this.logBox.appendLine("");
-    let maxCharacters = this.logBox.getMaxCharactersPerLine();
-    let logLine = TextHelp.fixLength("Request number " + this.requestsMade + " - starting from " + (forUpdate ? 'update' : 'creation') + " date: ", maxCharacters - 32);
-    logLine += DateHelp.formatTime(forUpdate ? this.lastUpdateDate : this.lastCreationDate) + " (" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
-    this.logBox.appendLine(logLine);
-    this.logBox.appendLine("-".repeat(maxCharacters));
+    let logLineLeft = "Request number " + this.requestsMade + " - starting from " + (forUpdate ? 'update' : 'creation') + " date: ";
+    let logLineRight = DateHelp.formatDateSeconds(forUpdate ? this.lastUpdateDate : this.lastCreationDate) + " (" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
+    this.logBox.appendLine(logLineLeft, logLineRight);
+    this.logBox.appendLine("-".repeat(this.logBox.getMaxCharactersPerLine()));
 
     // get games from IGDB
     let filters = this.getFilters(forUpdate);
@@ -125,10 +124,9 @@ export class IgdbSyncService {
         forUpdate ? this.lastUpdateDate = game[dateField] : this.lastCreationDate = game[dateField];
 
         // log
-        let maxCharacters = this.logBox.getMaxCharactersPerLine();
-        let logLine = TextHelp.fixLength("Game " + TextHelp.fixLength(game['id'], 6) + " " + (forUpdate ? 'update' : 'create') + ": " + game['name'], maxCharacters - 12);
-        logLine += "(" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
-        this.logBox.appendLine(logLine);
+        let logLineLeft = "Game " + TextHelp.fixLength(game['id'], 6) + " " + (forUpdate ? 'update' : 'create') + ": " + game['name'];
+        let logLineRight = "(" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
+        this.logBox.appendLine(logLineLeft, logLineRight);
 
         // check if stop is pressed
         if (this.stopForced) {
@@ -181,7 +179,7 @@ export class IgdbSyncService {
       if (gamesNotInPreviousPack == 0) {
         forUpdate ? this.lastUpdateDate++ : this.lastCreationDate++;
         this.logBox.appendLine("All games of this pack were already processed in the previous pack. " +
-          "Increasing date by 1 sec to get new games: " + DateHelp.formatTime(forUpdate ? this.lastUpdateDate : this.lastCreationDate) + 
+          "Increasing date by 1 sec to get new games: " + DateHelp.formatDateSeconds(forUpdate ? this.lastUpdateDate : this.lastCreationDate) + 
           " (" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")");
           this.logBox.appendLine("WARNING: This jump of 1 sec might result in loss of games.");
       }

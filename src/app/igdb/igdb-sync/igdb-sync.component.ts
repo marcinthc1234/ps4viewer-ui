@@ -31,14 +31,14 @@ export class IgdbSyncComponent implements OnInit {
     if (this.igdbSyncService.lastCreationDate == null) {
       return null;
     }
-    return DateHelp.formatTime(this.igdbSyncService.lastCreationDate) + " (" + this.igdbSyncService.lastCreationDate + ")"
+    return DateHelp.formatDateSeconds(this.igdbSyncService.lastCreationDate) + " (" + this.igdbSyncService.lastCreationDate + ")"
   }
   
   getLastUpdateDate() {
     if (this.igdbSyncService.lastUpdateDate == null) {
       return null;
     }
-    return DateHelp.formatTime(this.igdbSyncService.lastUpdateDate) + " (" + this.igdbSyncService.lastUpdateDate + ")"
+    return DateHelp.formatDateSeconds(this.igdbSyncService.lastUpdateDate) + " (" + this.igdbSyncService.lastUpdateDate + ")"
   }
   
   getGamesSynced() {
