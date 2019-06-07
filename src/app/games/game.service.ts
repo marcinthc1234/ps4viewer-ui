@@ -59,7 +59,7 @@ export class GameService {
         game = this.validateAndFixFromIgdb(game);
         let gameJson: string = JSON.stringify(game);
 
-        // send post request to update game in our API
+        // send put request to update game in our API
         this.httpClient
             .put(this.apiUrl, gameJson, options)
             .pipe(catchError((err: HttpErrorResponse) => {
@@ -89,6 +89,29 @@ export class GameService {
                 return EMPTY;
             }));
         return response;
+    }
+
+    setLastUpdateDate(lastUpdateDate: number) {
+        
+        // prepare headers and data
+        // let httpHeaders = new HttpHeaders()
+        //     .set('Content-Type', 'application/json')
+        //     .set('Cache-Control', 'no-cache');
+        // let options = {
+        //     headers: httpHeaders
+        // };
+        // let gameJson: string = JSON.stringify(game);
+
+        // send post request to create game in our API
+        this.httpClient
+            .post(this.apiUrl + '/last-update', lastUpdateDate) //, options
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Setting last update date failed. Date sent: ' + lastUpdateDate, err.error);
+                return EMPTY;
+            }))
+            .subscribe(response => {
+                // do nothing
+            });
     }
 
     /**

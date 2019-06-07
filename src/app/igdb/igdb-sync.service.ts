@@ -43,10 +43,17 @@ export class IgdbSyncService {
 
     // sync games (last creation date and last update date are necessary for the sync)
     this.gameService.getLastCreationDate().subscribe(lastCreationDate => {
+      // get last creation date
       this.lastCreationDate = lastCreationDate == null ? 0 : lastCreationDate;
       this.getCountOfGamesLeftToSync();
       this.gameService.getLastUpdateDate().subscribe(lastUpdateDate => {
-        this.lastUpdateDate = lastUpdateDate == null ? Date.now() : lastUpdateDate;
+        // get last update date
+        if (lastUpdateDate == null) {
+          this.lastUpdateDate = DateHelp.nowInSeconds();
+          this.gameService.setLastUpdateDate(this.lastUpdateDate);
+        } else {
+          this.lastUpdateDate = lastUpdateDate;
+        }
         this.syncGames();
       });
     });
@@ -108,7 +115,7 @@ export class IgdbSyncService {
     let dateField = this.getDateField(forUpdate);
     this.logBox.appendLine("");
     let logLineLeft = "Request number " + this.requestsMade + " - starting from " + (forUpdate ? 'update' : 'creation') + " date: ";
-    let logLineRight = DateHelp.formatDateSeconds(forUpdate ? this.lastUpdateDate : this.lastCreationDate) + " (" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
+    let logLineRight = DateHelp.formatDateSecondsFull(forUpdate ? this.lastUpdateDate : this.lastCreationDate);
     this.logBox.appendLine(logLineLeft, logLineRight);
     this.logBox.appendLine("-".repeat(this.logBox.getMaxCharactersPerLine()));
 
@@ -125,7 +132,7 @@ export class IgdbSyncService {
 
         // log
         let logLineLeft = "Game " + TextHelp.fixLength(game['id'], 6) + " " + (forUpdate ? 'update' : 'create') + ": " + game['name'];
-        let logLineRight = "(" + (forUpdate ? this.lastUpdateDate : this.lastCreationDate) + ")";
+        let logLineRight = DateHelp.formatDateSecondsFull(forUpdate ? this.lastUpdateDate : this.lastCreationDate);
         this.logBox.appendLine(logLineLeft, logLineRight);
 
         // check if stop is pressed
@@ -143,6 +150,7 @@ export class IgdbSyncService {
           // create/update game in our API
           if (forUpdate) {
             this.gameService.updateFromIgdb(game);
+            this.gameService.setLastUpdateDate(this.lastUpdateDate);
           } else {
             this.gameService.createFromIgdb(game);
           }

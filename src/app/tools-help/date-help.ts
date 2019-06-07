@@ -25,4 +25,16 @@ export class DateHelp {
     return this.formatDate(new Date(seconds * 1000));
   }
 
+  /**
+   * Convert time given in seconds to a date/time format.
+   * Also return seconds in a parenthesis.
+   */
+  static formatDateSecondsFull(seconds: number, includeTime: boolean = false): string {
+    return this.formatDateSeconds(seconds, includeTime) + " (" + TextHelp.fixLengthNumber(seconds, 10) + ")";
+  }
+
+  static nowInSeconds(): number {
+    return Math.floor(Date.now() / 1000)
+  }
+
 }
