@@ -147,12 +147,10 @@ export class IgdbSyncService {
 
         // if game was not included in the previous pack
         if (!previousGameIds.includes(game['id'])) {
-          // create/update game in our API
+          // sync game in our API
+          this.gameService.syncFromIgdb(game);
           if (forUpdate) {
-            this.gameService.updateFromIgdb(game);
             this.gameService.setLastUpdateDate(this.lastUpdateDate);
-          } else {
-            this.gameService.createFromIgdb(game);
           }
 
           this.gamesCount++;

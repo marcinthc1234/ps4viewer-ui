@@ -68,7 +68,7 @@ export class IgdbApiService {
 
   private getDefaultFields(): string[] {
     let defaultFields = 
-      ['id','name','created_at','updated_at','release_dates.date','summary','storyline','popularity',
+      ['id','name','created_at','updated_at','release_dates.date','release_dates.platform','summary','storyline','popularity',
       'involved_companies.company.name','involved_companies.company.description',
       'involved_companies.company.logo.image_id','involved_companies.company.updated_at',
       'involved_companies.developer','genres.name','platforms.name','cover.image_id']

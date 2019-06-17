@@ -71,6 +71,29 @@ export class GameService {
             });
     }
 
+    syncFromIgdb(game: object) {
+        // prepare headers and data
+        let httpHeaders = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Cache-Control', 'no-cache');
+        let options = {
+            headers: httpHeaders
+        };
+        game = this.validateAndFixFromIgdb(game);
+        let gameJson: string = JSON.stringify(game);
+
+        // send post request to create game in our API
+        this.httpClient
+            .post(this.apiUrl + '/sync', gameJson, options)
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Creation of game failed. JSON sent: ' + gameJson, err.error);
+                return EMPTY;
+            }))
+            .subscribe(response => {
+                // do nothing
+            });
+    }
+
     getLastCreationDate(): Observable<number> {
         let response: Observable<number> = this.httpClient
             .get<number>(this.apiUrl + '/last-create')
@@ -92,17 +115,6 @@ export class GameService {
     }
 
     setLastUpdateDate(lastUpdateDate: number) {
-        
-        // prepare headers and data
-        // let httpHeaders = new HttpHeaders()
-        //     .set('Content-Type', 'application/json')
-        //     .set('Cache-Control', 'no-cache');
-        // let options = {
-        //     headers: httpHeaders
-        // };
-        // let gameJson: string = JSON.stringify(game);
-
-        // send post request to create game in our API
         this.httpClient
             .post(this.apiUrl + '/last-update', lastUpdateDate) //, options
             .pipe(catchError((err: HttpErrorResponse) => {
