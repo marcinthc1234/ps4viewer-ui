@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { MenuItem } from './menu-item.enum';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +8,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @Output() menuItemSelected = new EventEmitter<string>();
+  MenuItemEnum = MenuItem;
 
   constructor() { }
 
