@@ -4,3 +4,7 @@ table {
     border-left: solid 1px rgb(221,221,221);
     border-bottom: solid 1px rgb(221,221,221);
 }
+
+.header-tr {
+    height: 60px;
+}

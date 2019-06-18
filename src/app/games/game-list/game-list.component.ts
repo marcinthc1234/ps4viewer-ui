@@ -5,7 +5,7 @@ import { GameService } from '../game.service';
 @Component({
   selector: 'app-game-list',
   templateUrl: './game-list.component.html',
-  styleUrls: ['./game-list.component.css'],
+  styleUrls: ['./game-list.component.css', '../../tools-ui/shared.css'],
   providers: [GameService]
 })
 export class GamesListComponent implements OnInit {
@@ -21,7 +21,7 @@ export class GamesListComponent implements OnInit {
   }
 
   getColumns(): string[] {
-    return ['Image', 'Name', 'Company', 'Vote'];
+    return ['', 'Name', 'Company', 'Vote'];
   }
 
   getGames(): void {

@@ -1,14 +1,11 @@
-<h2>Games</h2>
+<h2 class="vmiddle-spacy-content">Games</h2>
 
 <table class="table table-striped">
-    <tr>
-        <th *ngFor="let column of columns">
-            <h3>{{column}}</h3>
+    <tr class="header-tr">
+        <th *ngFor="let column of columns" class="vmiddle">
+            <h3 class="vmiddle-content">{{column}}</h3>
         </th>
     </tr>
-    <tr 
-        *ngFor="let gameElement of games"
-        [game]="gameElement"
-        app-game>
+    <tr *ngFor="let game of games" [game]="game" app-game>
     </tr>
 </table>

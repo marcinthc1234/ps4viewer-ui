@@ -1,14 +1,15 @@
+
     <td>
         <img 
-        src="{{game.imagePath}}" 
+        src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{game.cover.image_id}}.jpg" 
         alt="{{game.name}}"
         class="img-responsive">
     </td>
-    <td class="vmiddle"><h2 class="h2middle">{{game.name}}</h2></td>
-    <td class="vmiddle"><h2 class="h2middle">
+    <td class="vmiddle"><h3 class="vmiddle-content">{{game.name}}</h3></td>
+    <td class="vmiddle"><h3 class="vmiddle-content">
         <small 
             *ngFor="let involved_company of game.involved_companies" >
             {{involved_company.company.name}}
         </small>
-    </h2></td>
-    <td class="vmiddle"><app-stars></app-stars></td>
+    </h3></td>
+    <td class="vmiddle stars"><app-stars class="vmiddle-content"></app-stars></td>
