@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h4>Summary</h4>
+        {{game.summary}}
+      </div>
+      <div class="col-sm-5">
+        <h4>StoryLine</h4>
+        {{game.storyline}}
+      </div>
+      <div class="col-sm-2">
+        <h4>Release Date</h4>
+        {{getReleaseDate()}}
+        <h4>Genres</h4>
+        <div *ngFor="let genre of game.genres">{{genre.name}}</div>
+        <h4>Platforms</h4>
+        <div *ngFor="let platform of game.platforms">{{platform.name}}</div>
+      </div>
+    </div>
+  </div>

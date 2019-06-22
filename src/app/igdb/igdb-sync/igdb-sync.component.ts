@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IgdbSyncService } from '../igdb-sync.service';
-import { LogBoxComponent } from 'src/app/tools-ui/log-box/log-box.component';
+import { LogBoxComponent } from 'src/app/tools-components/log-box/log-box.component';
 import { DateHelp } from 'src/app/tools-help/date-help';
 import { TypeHelp } from 'src/app/tools-help/type-help';
 

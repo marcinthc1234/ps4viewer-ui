@@ -12,8 +12,10 @@ import { IgdbSyncComponent } from './igdb/igdb-sync/igdb-sync.component';
 
 import { HeaderComponent } from './header/header.component';
 
-import { StarsComponent } from './tools-ui/stars/stars.component';
-import { LogBoxComponent } from './tools-ui/log-box/log-box.component';
+import { StarsComponent } from './tools-components/stars/stars.component';
+import { LogBoxComponent } from './tools-components/log-box/log-box.component';
+import { GameDetailsComponent } from './games/game-details/game-details.component';
+import { RemoveComponentTagDirective } from './tools-directives/remove-component-tag/remove-component-tag.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { LogBoxComponent } from './tools-ui/log-box/log-box.component';
     GameComponent,
     IgdbSyncComponent,
     StarsComponent,
-    LogBoxComponent
+    LogBoxComponent,
+    GameDetailsComponent,
+    RemoveComponentTagDirective
   ],
   imports: [
     BrowserModule,

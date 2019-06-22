@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IgdbApiService } from './igdb-api.service';
-import { LogBoxComponent } from '../tools-ui/log-box/log-box.component';
-import { LogBox } from '../tools-ui/log-box/log-box';
+import { LogBoxComponent } from '../tools-components/log-box/log-box.component';
+import { LogBox } from '../tools-components/log-box/log-box';
 import { DateHelp } from '../tools-help/date-help';
 import { ThreadHelp } from '../tools-help/thread-help';
 import { GameService } from '../games/game.service';

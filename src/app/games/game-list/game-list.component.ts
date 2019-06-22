@@ -5,8 +5,8 @@ import { GameService } from '../game.service';
 @Component({
   selector: 'app-game-list',
   templateUrl: './game-list.component.html',
-  styleUrls: ['./game-list.component.css', '../../tools-ui/shared.css'],
-  providers: [GameService]
+  styleUrls: ['./game-list.component.css', '../../tools-css/shared.css'],
+  providers: [GameService],
 })
 export class GamesListComponent implements OnInit {
 
