@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { Game } from '../game.model';
+import { ElementHelp } from 'src/app/tools-help/element-help';
 
 @Component({
   selector: 'app-game',
@@ -10,6 +11,8 @@ export class GameComponent implements OnInit {
 
   @Input() game: Game;
   gameSelected: boolean;
+  /** option whether to scroll to the game on selection */
+  scrollToSelected: boolean = false;
 
   constructor() { }
 
@@ -19,10 +22,9 @@ export class GameComponent implements OnInit {
 
   onSelect(element: HTMLElement) {
     this.gameSelected = !this.gameSelected;
-    if (this.gameSelected) {
-      setTimeout(function(){ 
-        element.scrollIntoView({behavior:"smooth"});
-      }, 50);
+
+    if (this.gameSelected && this.scrollToSelected) {
+      ElementHelp.scrollTo(element);
     }
   }
 
