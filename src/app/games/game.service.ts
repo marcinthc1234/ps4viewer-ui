@@ -25,6 +25,22 @@ export class GameService {
         return response;
     }
 
+    searchGames(query: string): Observable<Game[]> {
+        let options = {
+            params: {
+                query: query
+            }
+        };
+
+        let response: Observable<Game[]> = this.httpClient
+            .get<Game[]>(this.apiUrl + "/search", options)
+            .pipe(catchError((err: HttpErrorResponse) => {
+                console.error('Getting all games failed', err.error);
+                return EMPTY;
+            }));
+        return response;
+    }
+
     createFromIgdb(game: object) {
         // prepare headers and data
         let httpHeaders = new HttpHeaders()

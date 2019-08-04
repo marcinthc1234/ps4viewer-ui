@@ -1,12 +1,12 @@
 <h2 class="vmiddle-spacy-content">Games</h2>
 
 <form class="form-inline vtop-spacy-content">
-    <div class="md-form mt-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <div class="md-form">
+        <input class="form-control w100" type="text" placeholder="Search" (input)="onSearchChange($event.target.value)" />
     </div>
 </form>
 
-<table class="table table-striped">
+<table #gamesTable class="table table-striped">
     <!-- header -->
     <tr class="header-tr">
         <th *ngFor="let column of columns" class="vmiddle">
